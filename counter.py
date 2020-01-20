@@ -1,5 +1,5 @@
 import asyncio
-from asyncio import create_task as atask, sleep as asleep
+from asyncio import sleep as asleep
 from time import ctime
 from mayura import Component, Interval, Div
 
