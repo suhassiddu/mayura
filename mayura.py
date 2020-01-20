@@ -77,4 +77,15 @@ class Interval(Component):
             self._tick = False
             await asleep(delay)
 
-__all__ = ['Component', 'Interval']
+class Div(Component):
+    state = {
+        'text': ''
+    }
+
+    async def __init__(self):
+        await self.text_subscribe(self.show_text)
+
+    async def show_text(self, text):
+        print(text)
+
+__all__ = ['Component', 'Interval', 'Div']

@@ -1,7 +1,7 @@
 import asyncio
 from asyncio import create_task as atask, sleep as asleep
 from time import ctime
-from mayura import Component, Interval
+from mayura import Component, Interval, Div
 
 
 class Counter(Component):
@@ -20,10 +20,11 @@ class Counter(Component):
 class App(Component):
     async def __init__(self):
         counter = await Counter()
-        await counter.count_subscribe(self.print_count)
+        self.div = await Div() 
+        await counter.count_subscribe(self.update_div)
 
-    async def print_count(self, count):
-        print(f'count: {count}')
+    async def update_div(self, count):
+        await self.div.text_set(f'count: {count}')
 
 async def main():
     app = await App()
