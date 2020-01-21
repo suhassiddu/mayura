@@ -16,6 +16,18 @@ class Counter(Component):
     async def increment(self, tick):
         await self.count_set(await self.count_get() + 1)
 
+class Counter(Component):
+    state = {
+        'count': 0
+    }
+
+    async def __init__(self):
+        await Interval(
+            name='interval',
+            self=self,
+            delay=1,
+            tick_subscribe=self.increment)
+
 
 class App(Component):
     async def __init__(self):
@@ -25,6 +37,21 @@ class App(Component):
 
     async def update_div(self, count):
         await self.div.text_set(f'count: {count}')
+
+class App(Component):
+    async def __init__(self):
+        await Counter(
+            name='counter',
+            self=self)
+            # count_subscribe=lambda count: \
+            #    self.div.text_set(f'count: {count}'))
+
+        await Div(
+            name='div',
+            self=self,
+            text=lambda text_set: \
+                self.counter.count_subscribe(lambda count: \
+                    text_set(f'count: {count}'))
 
 async def main():
     app = await App()
